@@ -1,6 +1,7 @@
 #include "Graph.h"
 #include <iostream>
 #include <iomanip>
+using namespace std;
 
 Graph::Graph()
 {
@@ -153,69 +154,69 @@ int Graph::getRisk(int src, int dest)
 
 void Graph::displayMap(Location locations[], int locationCount)
 {
-    std::cout << "\n========== ROAD MAP ==========\n";
+    cout << "\n========== ROAD MAP ==========\n";
 
     if (locationCount == 0)
     {
-        std::cout << "No locations available.\n";
+        cout << "No locations available.\n";
         return;
     }
 
-    std::cout << std::left << std::setw(14) << "From/To";
+    cout << left << setw(14) << "From/To";
     for (int i = 0; i < locationCount; i++)
     {
-        std::cout << std::setw(10) << locations[i].getName();
+        cout << std::setw(10) << locations[i].getName();
     }
-    std::cout << "\n";
+    cout << "\n";
 
     for (int i = 0; i < locationCount; i++)
     {
-        std::cout << std::setw(14) << locations[i].getName();
+        cout << setw(14) << locations[i].getName();
         for (int j = 0; j < locationCount; j++)
         {
             if (i == j)
             {
-                std::cout << std::setw(10) << "-";
+                cout << setw(10) << "-";
             }
             else if (hasEdge(i, j))
             {
                 if (blocked[i][j] == 1)
                 {
-                    std::cout << std::setw(10) << "BLOCKED";
+                    cout << setw(10) << "BLOCKED";
                 }
                 else
                 {
-                    std::cout << std::setw(10) << distance[i][j];
+                    cout << setw(10) << distance[i][j];
                 }
             }
             else
             {
-                std::cout << std::setw(10) << "0";
+                cout << setw(10) << "0";
             }
         }
-        std::cout << "\n";
+        cout << "\n";
     }
 
-    std::cout << "\nRoad Details:\n";
+    cout << "\nRoad Details:\n";
     for (int i = 0; i < locationCount; i++)
     {
         for (int j = 0; j < locationCount; j++)
         {
             if (i != j && hasEdge(i, j) && i < j)
             {
-                std::cout << locations[i].getName() << " -> " << locations[j].getName()
+                cout << locations[i].getName() << " -> " << locations[j].getName()
                           << " | Distance: " << distance[i][j]
                           << " km | Risk: " << risk[i][j];
 
                 if (blocked[i][j] == 1)
                 {
-                    std::cout << " | Status: BLOCKED";
+                    cout << " | Status: BLOCKED";
                 }
 
-                std::cout << "\n";
+                cout << "\n";
             }
         }
     }
 
-    std::cout << "==============================\n";
+    cout << "==============================\n";
 }
