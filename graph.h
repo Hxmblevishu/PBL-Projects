@@ -3,7 +3,7 @@
 
 #include "Location.h"
 
-const int MAX_VERTICES = 500;
+const int MAX_VERTICES = 50;
 
 class Graph
 {
