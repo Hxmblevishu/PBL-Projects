@@ -1,6 +1,4 @@
 #include "Location.h"
-#include <iostream>
-#include <cstring>
 
 Location::Location()
 {
@@ -16,27 +14,21 @@ Location::Location(int id, const char name[])
 void Location::setLocation(int id, const char name[])
 {
     this->id = id;
-
-    for (int i = 0; i < 29 && name[i] != '\0'; i++)
+    int i = 0;
+    while (i < 63 && name != 0 && name[i] != '\0')
     {
         this->name[i] = name[i];
+        i++;
     }
-
-    this->name[29] = '\0';
+    this->name[i] = '\0';
 }
 
-int Location::getId()
+int Location::getId() const
 {
     return id;
 }
 
-const char* Location::getName()
+const char* Location::getName() const
 {
     return name;
-}
-
-void Location::display()
-{
-    std::cout << "Location ID   : " << id << "\n"
-              << "Location Name : " << name << "\n";
 }
