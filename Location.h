@@ -5,7 +5,7 @@ class Location
 {
 private:
     int id;
-    char name[30];
+    char name[64];
 
 public:
     Location();
@@ -13,10 +13,10 @@ public:
 
     void setLocation(int id, const char name[]);
 
-    int getId();
-    const char* getName();
+    int getId() const;
+    const char* getName() const;
 
-    void display();
 };
 
 #endif
+
