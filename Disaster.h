@@ -18,11 +18,11 @@ public:
 
     void setDisaster(int id, int locationId, const char type[], int severity, int active);
 
-    int getDisasterId();
-    int getLocationId();
-    const char* getType();
-    int getSeverity();
-    int isActive();
+    int getDisasterId() const;
+    int getLocationId() const;
+    const char* getType() const;
+    int getSeverity() const;
+    int isActive() const;
 
     void setActive(int status);
     void display();
@@ -37,14 +37,15 @@ private:
 public:
     DisasterManager();
 
-    int getDisasterCount();
+    int getDisasterCount() const;
     bool addDisaster(int locationId, const char type[], int severity);
+    bool restoreDisaster(int id, int locationId, const char type[], int severity, int active);
+    const Disaster& getDisasterAt(int index) const;
     void viewDisasters();
     void deactivateDisaster(int disasterId);
 
-    int getEffectiveRisk(int baseRisk, int src, int dest);
-    bool isRoadBlockedByDisaster(int src, int dest);
-    Disaster* getDisaster(int index);
+    int getEffectiveRisk(int baseRisk, int src, int dest) const;
+    bool isRoadBlockedByDisaster(int src, int dest) const;
 };
 
 #endif

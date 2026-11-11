@@ -1,4 +1,5 @@
 #include "Disaster.h"
+#include "ConsoleUI.h"
 #include <iostream>
 #include <cstring>
 
@@ -39,27 +40,27 @@ void Disaster::setDisaster(int id, int locationId, const char type[], int severi
     this->type[29] = '\0';
 }
 
-int Disaster::getDisasterId()
+int Disaster::getDisasterId() const
 {
     return disasterId;
 }
 
-int Disaster::getLocationId()
+int Disaster::getLocationId() const
 {
     return locationId;
 }
 
-const char* Disaster::getType()
+const char* Disaster::getType() const
 {
     return type;
 }
 
-int Disaster::getSeverity()
+int Disaster::getSeverity() const
 {
     return severity;
 }
 
-int Disaster::isActive()
+int Disaster::isActive() const
 {
     return active;
 }
@@ -71,11 +72,15 @@ void Disaster::setActive(int status)
 
 void Disaster::display()
 {
-    std::cout << "Disaster ID : " << disasterId << "\n"
-              << "Location ID : " << locationId << "\n"
-              << "Type        : " << type << "\n"
-              << "Severity    : " << severity << "\n"
-              << "Status      : " << (active ? "Active" : "Inactive") << "\n";
+    ConsoleUI ui;
+    ui.setColor(ConsoleUI::PINK); std::cout << "  INCIDENT " << disasterId << "\n";
+    ui.setColor(ConsoleUI::WHITE); std::cout << "  Place ID: " << locationId << "\n";
+    std::cout << "  Situation: " << type << "\n";
+    ui.setColor(severity >= 4 ? ConsoleUI::RED : ConsoleUI::PINK);
+    std::cout << "  Severity: " << severity << "/5\n";
+    ui.setColor(active ? ConsoleUI::RED : ConsoleUI::LIGHT_BLUE);
+    std::cout << "  Status: " << (active ? "ACTIVE" : "CLOSED") << "\n";
+    ui.resetColor();
 }
 
 DisasterManager::DisasterManager()
@@ -83,7 +88,7 @@ DisasterManager::DisasterManager()
     disasterCount = 0;
 }
 
-int DisasterManager::getDisasterCount()
+int DisasterManager::getDisasterCount() const
 {
     return disasterCount;
 }
@@ -100,20 +105,43 @@ bool DisasterManager::addDisaster(int locationId, const char type[], int severit
     return true;
 }
 
+bool DisasterManager::restoreDisaster(int id, int locationId, const char type[], int severity, int active)
+{
+    if (disasterCount >= MAX_DISASTERS || id <= 0 || locationId < 0 || severity < 1 || severity > 5)
+    {
+        return false;
+    }
+
+    disasters[disasterCount].setDisaster(id, locationId, type, severity, active ? 1 : 0);
+    disasterCount++;
+    return true;
+}
+
+const Disaster& DisasterManager::getDisasterAt(int index) const
+{
+    return disasters[index];
+}
+
 void DisasterManager::viewDisasters()
 {
-    std::cout << "\n========== DISASTERS ==========\n";
+    ConsoleUI ui;
+    ui.setColor(ConsoleUI::PINK);
+    std::cout << "\n  DISASTER INFORMATION\n";
+    ui.divider('=');
+    ui.resetColor();
 
     if (disasterCount == 0)
     {
-        std::cout << "No disasters recorded.\n";
+        ui.setColor(ConsoleUI::LIGHT_BLUE);
+        std::cout << "  No incidents have been recorded.\n";
+        ui.resetColor();
         return;
     }
 
     for (int i = 0; i < disasterCount; i++)
     {
         disasters[i].display();
-        std::cout << "------------------------------\n";
+        ui.divider();
     }
 }
 
@@ -129,7 +157,7 @@ void DisasterManager::deactivateDisaster(int disasterId)
     }
 }
 
-int DisasterManager::getEffectiveRisk(int baseRisk, int src, int dest)
+int DisasterManager::getEffectiveRisk(int baseRisk, int src, int dest) const
 {
     int effectiveRisk = baseRisk;
 
@@ -148,7 +176,7 @@ int DisasterManager::getEffectiveRisk(int baseRisk, int src, int dest)
     return effectiveRisk;
 }
 
-bool DisasterManager::isRoadBlockedByDisaster(int src, int dest)
+bool DisasterManager::isRoadBlockedByDisaster(int src, int dest) const
 {
     for (int i = 0; i < disasterCount; i++)
     {
