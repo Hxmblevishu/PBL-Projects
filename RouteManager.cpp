@@ -3,6 +3,7 @@
 #include "PriorityQueue.h"
 #include "ConsoleUI.h"
 #include <iostream>
+using namespace std;
 
 RouteManager::RouteManager()
 {
@@ -339,14 +340,14 @@ void RouteManager::displayRoute(const char* title, RouteResult result)
 {
     ConsoleUI ui;
     ui.setColor(ConsoleUI::PINK);
-    std::cout << "\n  " << title << "\n";
+    cout << "\n  " << title << "\n";
     ui.divider('=');
     ui.resetColor();
 
     if (!result.found)
     {
         ui.setColor(ConsoleUI::RED);
-        std::cout << "  No available route connects those places.\n";
+        cout << "  No available route connects those places.\n";
         ui.resetColor();
         ui.divider();
         return;
@@ -354,34 +355,34 @@ void RouteManager::displayRoute(const char* title, RouteResult result)
 
     if (result.pathLength == 1)
     {
-        std::cout << "  Start and destination are the same place: ";
+        cout << "  Start and destination are the same place: ";
         ui.setColor(ConsoleUI::LIGHT_BLUE);
-        std::cout << locations[result.path[0]].getName() << "\n";
+        cout << locations[result.path[0]].getName() << "\n";
         ui.resetColor();
         ui.divider();
         return;
     }
 
-    std::cout << "  ";
+    cout << "  ";
     for (int i = 0; i < result.pathLength; i++)
     {
         ui.setColor(ConsoleUI::LIGHT_BLUE);
-        std::cout << locations[result.path[i]].getName();
+        cout << locations[result.path[i]].getName();
         ui.resetColor();
         if (i < result.pathLength - 1)
-            std::cout << "  ->  ";
+            cout << "  ->  ";
     }
 
-    std::cout << "\n";
-    ui.setColor(ConsoleUI::PINK); std::cout << "  DISTANCE       ";
-    ui.setColor(ConsoleUI::WHITE); std::cout << result.totalDistance << " km\n";
-    ui.setColor(ConsoleUI::PINK); std::cout << "  SAFETY COST    ";
-    ui.setColor(ConsoleUI::WHITE); std::cout << result.totalSafetyCost << "\n";
+    cout << "\n";
+    ui.setColor(ConsoleUI::PINK); << cout"  DISTANCE       ";
+    ui.setColor(ConsoleUI::WHITE); cout << result.totalDistance << " km\n";
+    ui.setColor(ConsoleUI::PINK); cout << "  SAFETY COST    ";
+    ui.setColor(ConsoleUI::WHITE); cout << result.totalSafetyCost << "\n";
     ui.setColor(result.totalRisk > 8 ? ConsoleUI::RED :
                 result.totalRisk > 3 ? ConsoleUI::PINK : ConsoleUI::LIGHT_BLUE);
-    std::cout << "  RISK LEVEL     " << getRiskLevel(result.totalRisk) << "\n";
+    cout << "  RISK LEVEL     " << getRiskLevel(result.totalRisk) << "\n";
     ui.setColor(ConsoleUI::LIGHT_BLUE);
-    std::cout << "  ROUTE STATUS   AVAILABLE\n";
+    cout << "  ROUTE STATUS   AVAILABLE\n";
     ui.resetColor();
     ui.divider();
 }
